@@ -18,14 +18,15 @@ module ResponseChecker
           response = http.request request
 
           if response.is_a? Net::HTTPSuccess then
-            puts "#{uri}: #{response.code}, Found"
+            # code, message, uri
+            puts "#{response.code}, Found, #{uri}"
           else
-            puts "#{uri}: #{response.code}, Not Found"
+            puts "#{response.code}, Not Found or Redirected, #{uri}"
           end
         end
 
       rescue => e
-        puts "#{uri}: #{e.class}, #{e.message}"
+        puts "#{e.class}, #{e.message}, #{uri}"
       end
     end
 
