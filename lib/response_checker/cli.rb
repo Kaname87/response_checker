@@ -9,6 +9,10 @@ module ResponseChecker
     def check(request_uri)
       begin
         uri = URI(request_uri)
+
+        # Validation of URI protocol
+        raise "Invalid URI. please check if URI has a protocol info (http:// or https://)" unless uri.is_a? URI::HTTP
+
         Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
           request = Net::HTTP::Get.new uri
           response = http.request request
@@ -18,8 +22,8 @@ module ResponseChecker
           else
             puts "#{uri}: #{response.code}, Not Found"
           end
-
         end
+
       rescue => e
         puts "#{uri}: #{e.class}, #{e.message}"
       end
