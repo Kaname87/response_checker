@@ -5,7 +5,7 @@ require 'net/http'
 module ResponseChecker
   class CLI < Thor
 
-    desc "check URI", "check response code of the URI"
+    desc "check URI", "Check response code of the URI"
     def check(request_uri)
       begin
         uri = URI(request_uri)
