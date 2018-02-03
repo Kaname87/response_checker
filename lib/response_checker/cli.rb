@@ -29,5 +29,16 @@ module ResponseChecker
       end
     end
 
+    desc "check_all FILENAME", "Check all URI in the FILENAME. The file should have one uri per line"
+    def check_all(filename)
+      begin
+        File.open(filename).each do |line|
+          # Call .chomp not to include new line
+          check line.chomp
+        end
+      rescue => e
+        puts "#{e.class}, #{e.message}"
+      end
+    end
   end
 end
