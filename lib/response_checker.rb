@@ -1,5 +1,5 @@
 require "response_checker/version"
+require "response_checker/cli"
 
 module ResponseChecker
-  # Your code goes here...
 end
