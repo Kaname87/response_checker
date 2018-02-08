@@ -14,7 +14,7 @@ module ResponseChecker
         raise "Invalid URI. please check if URI has a protocol info (http:// or https://)" unless uri.is_a? URI::HTTP
 
         Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
-          request = Net::HTTP::Get.new uri
+          request = Net::HTTP::Head.new uri
           response = http.request request
 
           if response.is_a? Net::HTTPSuccess then
