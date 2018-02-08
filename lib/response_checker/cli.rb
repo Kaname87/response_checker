@@ -7,15 +7,21 @@ module ResponseChecker
 
     desc "check URI", "Check response code of the URI"
     def check(request_uri)
+      # Validation before parsing the argument to URI object
+      if not request_uri.is_a? String and not request_uri.is_a? URI
+         puts "Invalid URI. Expected URI object or URI string, #{request_uri}"
+        return
+      end
+
+      uri = URI(request_uri)
+
+      # Validation of URI protocol
+      if not uri.is_a? URI::HTTP then
+        puts "Invalid URI. please check if URI has a protocol info (http:// or https://), #{uri}"
+        return
+      end
+
       begin
-        uri = URI(1)
-
-        # Validation of URI protocol
-        if not uri.is_a? URI::HTTP then
-          puts "Invalid URI. please check if URI has a protocol info (http:// or https://), #{uri}"
-          return
-        end
-
         Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
           request = Net::HTTP::Head.new uri
           response = http.request request
@@ -24,7 +30,7 @@ module ResponseChecker
             # code, message, uri
             puts "#{response.code}, Found, #{uri}"
           else
-            puts "#{response.code}, Not Found or Redirected, #{uri}"
+            puts "#{response.code}, Not Found, #{uri}"
           end
         end
 
