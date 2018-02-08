@@ -8,10 +8,13 @@ module ResponseChecker
     desc "check URI", "Check response code of the URI"
     def check(request_uri)
       begin
-        uri = URI(request_uri)
+        uri = URI(1)
 
         # Validation of URI protocol
-        raise "Invalid URI. please check if URI has a protocol info (http:// or https://)" unless uri.is_a? URI::HTTP
+        if not uri.is_a? URI::HTTP then
+          puts "Invalid URI. please check if URI has a protocol info (http:// or https://), #{uri}"
+          return
+        end
 
         Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
           request = Net::HTTP::Head.new uri
